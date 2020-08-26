@@ -3,11 +3,12 @@
 const express = require('express');
 const router = express.Router();
 const users = require('./models/users-model');
-const auth = require('./middleware')
+const auth = require('./middleware/middleware')
+const oauth = require('./middleware/oauth')
 
 router.post('/signup', (req, res, next) => {
     const user = new users(req.body);
-
+    
     user.save()
         .then(user => {
             let token = user.methods.generateToken(user);
@@ -28,4 +29,8 @@ router.get('/users', async (req, res, next) => {
     return allUsers;
 })
 
-module.exports = {}
+router.get('/oauth', oauth, (req, res, next) => {
+
+})
+
+module.exports = router;

@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
 const username = new mongoose.Schema({
@@ -11,8 +12,6 @@ const username = new mongoose.Schema({
     email: {type: String},
     role: {type: String, required: true, default: 'user', enum: ['admin', 'editor', 'user']},
 });
-
-
 
 username.pre('save', async function() {
     if(this.isModified('password')) {
@@ -25,8 +24,7 @@ username.statics.authenticateBasic = function(username, password) {
     return this.find(query)
         .then(user => user && user.comparePassword(password))
         .catch(console.error);
-    
-};
+}
 
 username.methods.comparePassword = function(password) {
     return bcrypt.compare(password, this.password)

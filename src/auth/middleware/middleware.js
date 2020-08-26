@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
 
     console.log('user pass', user, pass);
 
-    const validUser = await new users.statics.authenticateBasic(user, pass);
+    const validUser = await users.authenticateBasic(user, pass);
     
     
     if(validUser){
